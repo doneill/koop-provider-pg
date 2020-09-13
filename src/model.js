@@ -16,8 +16,6 @@ Model.prototype.getData = function (req, callback) {
       geoJsonResult.metadata.title = "Postgres GeoJSON"
       geoJsonResult.metadata.description = `Data from Postgres PostGIS`
 
-      console.log('metadata: ', geoJsonResult.metadata)
-
       callback(null, geoJsonResult)
     })
     .catch(error => { callback(error) })

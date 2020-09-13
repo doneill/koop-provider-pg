@@ -1,14 +1,3 @@
-/*
-  index.js
-
-  This file is required. It's role is to specify configuration settings.
-
-  Documentation: http://koopjs.github.io/docs/usage/provider
-*/
-
-// Define the provider path
-// /:name/:hosts?/:disableIdParam?/FeatureServer/:layer/:method
-// e.g. /example/FeatureServer/0/query
 const provider = {
   type: 'provider',
   name: 'pg',

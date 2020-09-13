@@ -7,9 +7,8 @@ module.exports = {
     }
 }
 
-// Helper for linking to external query files;
 function sql(file) {
-    const fullPath = joinPath(__dirname, file); // generating full path;
+    const fullPath = joinPath(__dirname, file);
     const options = {
         minify: true
     };
