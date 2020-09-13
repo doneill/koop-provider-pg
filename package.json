@@ -1,0 +1,41 @@
+{
+  "name": "koop-provider-pg",
+  "version": "0.1.0",
+  "description": "A postgis provider for koop",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "koop serve",
+    "test": "standard && tape test/*.js | tap-spec"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "config": "^3.2.5",
+    "koop": "^3.17.0",
+    "pg-promise": "^10.6.1"
+  },
+  "author": "dev@jdoneill.com",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@koopjs/cli": "^0.6.0",
+    "nock": "^11.7.2",
+    "standard": "^14.3.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doneill/koop-provider-pg.git"
+  },
+  "bugs": {
+    "url": "https://github.com/doneill/koop-provider-pg/issues"
+  },
+  "homepage": "https://github.com/doneill/koop-provider-pg",
+  "keywords": [
+    "koop",
+    "postgresql",
+    "postgis"
+  ]
+}
