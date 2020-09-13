@@ -1,4 +1,4 @@
-# Koop Postgres provider
+## Koop PostgresQL PostGIS provider
  Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data from a [PostgreSQL](https://www.postgresql.org/), convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) that translates GeoJSON into the GeoServices specification supported by ArcGIS products.
 
 ## Dependencies
