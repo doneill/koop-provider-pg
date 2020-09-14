@@ -26,7 +26,10 @@ Model.prototype.getData = function (req, callback) {
 
       callback(null, geojson)
     })
-    .catch(error => { callback(error) })
+    .catch(error => {
+      callback(new Error(error + " on " + schema + "." + table))
+      console.error(error)
+    })
 }
 
 module.exports = Model
