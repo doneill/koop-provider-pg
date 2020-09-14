@@ -23,12 +23,20 @@ curl localhost:8080/pg/${schema}.${table}/FeatureServer/0/query
 
 **Add as Feature Layer**
 
+- Esri Leaflet
+
 ```javascript
 // esri leaflet feature layer
 L.esri.featureLayer({
-    url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
+    url: 'http://localhost:8080/pg/${schema}.${table}/FeatureServer/layers'
   }).addTo(map);
 ````
+
+- ArcGIS Online WebMap
+
+```bash
+https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/${schema}.${table}/FeatureServer/
+```
 
 ## Contributors
 <a href="https://github.com/doneill/koop-provider-pg/graphs/contributors">
