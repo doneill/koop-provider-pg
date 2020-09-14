@@ -14,6 +14,7 @@
     "bluebird": "^3.7.2",
     "config": "^3.2.5",
     "koop": "^3.17.0",
+    "lodash": "^4.17.20",
     "pg-promise": "^10.6.1"
   },
   "author": "dev@jdoneill.com",
