@@ -1,8 +1,12 @@
-## Koop PostgreSQL PostGIS provider
- Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data from [PostgreSQL](https://www.postgresql.org/), convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) to convert into the GeoServices specification supported by ArcGIS products.
+## Koop PostGIS provider
+ Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data, convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) and convert into the GeoServices specification supported by ArcGIS products.
 
 ## Dependencies
-TODO
+- [Koop](https://koopjs.github.io/)
+- [bluebird](http://bluebirdjs.com/docs/getting-started.html)
+- [config](https://lorenwest.github.io/node-config/)
+- [Lodash](https://lodash.com/)
+- [pg-promise](https://vitaly-t.github.io/pg-promise/)
 
 ## Test it out
 Run server:
@@ -11,10 +15,10 @@ Run server:
 
 **Example API Query:**
 
-Replace `${table-name}` with **schema.table** to translate.
+Replace `${schema}.${table}` with **schema.table** from your PostGIS db to translate.
 
 ```bash
-curl localhost:8080/pg/FeatureServer/0/query\?table\=${table-name}
+curl localhost:8080/pg/${schema}.${table}/FeatureServer/0/query
 ```
 
 ## Contributors
