@@ -1,23 +1,30 @@
+const _ = require('lodash')
 const {db} = require('../db');
 
 function Model (koop) {}
 
 Model.prototype.getData = function (req, callback) {
-  console.log('query table: ', req.query.f)
 
-  db.geojson.create(req.query.f)
+  const splitPath = req.params.id.split('.')
+  const schema = splitPath[0]
+  const table = splitPath[1]
+
+  if(!table) callback(new Error('The "id" parameter must be in the form of "schema.table"'))
+
+  db.geojson.create(schema + '.' + table)
     .then(result => {
-      const geoJsonResult = result.jsonb_build_object
+      const geojson = result.jsonb_build_object
 
-      if(geoJsonResult.metadata === undefined || geoJsonResult.metadata === null) {
-        geoJsonResult.metadata = {}
+      if(geojson.metadata === undefined || geojson.metadata === null) {
+        geojson.metadata = {}
       }
 
-      geoJsonResult.metadata.title = "PostGIS Data"
-      geoJsonResult.metadata.description = "Provided by koop-provider-pg"
-      geoJsonResult.metadata.idField = "objectid"
+      geojson.metadata.title = "PostGIS Data"
+      geojson.metadata.description = "GeoJSON from PostGIS ${schema}.${table}"
+      geojson.metadata.idField = "objectid"
+      geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
 
-      callback(null, geoJsonResult)
+      callback(null, geojson)
     })
     .catch(error => { callback(error) })
 }
