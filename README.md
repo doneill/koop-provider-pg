@@ -21,6 +21,15 @@ Replace `${schema}.${table}` with **schema.table** from your PostGIS db to trans
 curl localhost:8080/pg/${schema}.${table}/FeatureServer/0/query
 ```
 
+**Add as Feature Layer**
+
+```javascript
+// esri leaflet feature layer
+L.esri.featureLayer({
+    url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
+  }).addTo(map);
+````
+
 ## Contributors
 <a href="https://github.com/doneill/koop-provider-pg/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=doneill/koop-provider-pg" />
