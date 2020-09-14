@@ -19,8 +19,8 @@ Model.prototype.getData = function (req, callback) {
         geojson.metadata = {}
       }
 
-      geojson.metadata.title = "PostGIS Data"
-      geojson.metadata.description = "GeoJSON from PostGIS ${schema}.${table}"
+      geojson.metadata.title = geojson.metadata.name = schema
+      geojson.metadata.description = "GeoJSON from PostGIS " + schema + "." + table
       geojson.metadata.idField = "objectid"
       geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
 
