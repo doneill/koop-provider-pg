@@ -1,18 +1,18 @@
 const {geojson: sql} = require('../sql');
 
-class GeoJsonRepository {
+class DataRepository {
     constructor(db, pgp) {
         this.db = db
         this.pgp = pgp
     }
 
-    async create(values) {
+    async createGeoJson(values) {
         console.log('schema.table:', values)
-        return this.db.oneOrNone(sql.create, {
+        return this.db.oneOrNone(sql.createGeoJson, {
             table: values
         })
     }
 
 }
 
-module.exports = GeoJsonRepository;
+module.exports = DataRepository;

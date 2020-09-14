@@ -3,7 +3,7 @@ const {join: joinPath} = require('path');
 
 module.exports = {
     geojson: {
-        create: sql('createGeoJson.sql')
+        createGeoJson: sql('createGeoJson.sql')
     }
 }
 

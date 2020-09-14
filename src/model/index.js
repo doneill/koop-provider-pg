@@ -11,7 +11,7 @@ Model.prototype.getData = function (req, callback) {
 
   if(!table) callback(new Error('The "id" parameter must be in the form of "schema.table"'))
 
-  db.geojson.create(schema + '.' + table)
+  db.data.createGeoJson(schema + '.' + table)
     .then(result => {
       const geojson = result.jsonb_build_object
 

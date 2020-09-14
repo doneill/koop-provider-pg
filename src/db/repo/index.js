@@ -1,3 +1,3 @@
 module.exports = {
-    GeoJSON: require('./geojson')
+    Data: require('./data')
 };

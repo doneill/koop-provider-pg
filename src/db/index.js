@@ -2,7 +2,7 @@ const promise = require('bluebird');
 const config = require('config')
 
 const pgPromise = require('pg-promise')
-const {GeoJSON} = require('./repo');
+const {Data} = require('./repo');
 
 // Database connection details;
 const cn = {
@@ -17,7 +17,7 @@ const initOptions = {
     promiseLib: promise,
 
     extend(obj, dc) {
-        obj.geojson = new GeoJSON(obj, pgp)
+        obj.data = new Data(obj, pgp)
     }
 }
 
