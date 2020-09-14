@@ -7,8 +7,9 @@ class GeoJsonRepository {
     }
 
     async create(values) {
+        console.log('schema.table:', values)
         return this.db.oneOrNone(sql.create, {
-            table: +values.table
+            table: values
         })
     }
 
