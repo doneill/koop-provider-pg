@@ -8,6 +8,21 @@
 - [Lodash](https://lodash.com/)
 - [pg-promise](https://vitaly-t.github.io/pg-promise/)
 
+## Database configuration
+- Open **config/default.json** and set your database connection parameters
+
+```json
+{
+  "db": {
+    "host": "host",
+    "port": 5432,
+    "database": "dbname",
+    "user": "user",
+    "password": "password"
+  }
+}
+```
+
 ## Test it out
 Run server:
 - `npm install`
