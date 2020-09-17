@@ -47,11 +47,15 @@ L.esri.featureLayer({
   }).addTo(map);
 ````
 
+![feature-service](./assets/postgis-feature-service.png)
+
 - ArcGIS Online WebMap
 
 ```bash
 https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/${schema}.${table}/FeatureServer/
 ```
+
+![agol feature-service](./assets/postgis-agol-featureservice.png)
 
 ## Contributors
 <a href="https://github.com/doneill/koop-provider-pg/graphs/contributors">
