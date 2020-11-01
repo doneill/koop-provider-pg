@@ -6,11 +6,11 @@ const {Data} = require('./repo');
 
 // Database connection details;
 const cn = {
-    host: config.db.host,
-    port: config.db.port,
-    database: config.db.database,
-    user: config.db.user,
-    password: config.db.password
+    host: process.env.HOST || config.db.host,
+    port: process.env.PORT || config.db.port,
+    database: process.env.DATABASE || config.db.database,
+    user: process.env.PG_USER || config.db.user,
+    password: process.env.PG_PASSWORD || config.db.password
 }
 
 const initOptions = {
