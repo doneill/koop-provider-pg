@@ -1,9 +1,9 @@
 {
   "db": {
-    "host": "localhost",
-    "port": 5432,
-    "database": "spatial",
-    "user": "postgres",
-    "password": "postgres"
+    "host": "",
+    "port": "",
+    "database": "",
+    "user": "",
+    "password": ""
   }
 }
