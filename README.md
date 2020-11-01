@@ -1,15 +1,35 @@
 ## Koop PostGIS provider
  Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data, convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) and convert into the GeoServices specification supported by ArcGIS products.
 
-## Dependencies
-- [Koop](https://koopjs.github.io/)
-- [bluebird](http://bluebirdjs.com/docs/getting-started.html)
-- [config](https://lorenwest.github.io/node-config/)
-- [Lodash](https://lodash.com/)
-- [pg-promise](https://vitaly-t.github.io/pg-promise/)
+## Install
+
+**npm**
+
+```
+koop install koop-provider-pg
+```
+
+**koop-cli**
+
+```
+koop add provider koop-provider-pg
+```
 
 ## Database configuration
-- Open **config/default.json** and set your database connection parameters
+
+Database connection parameters can be configured to any connection using the following environment variables:
+
+```
+PG_HOST=<host>
+PG_PORT=<port>
+PG_DATABASE=<database>
+PG_USER=<user>
+PG_PASSWORD=<password>
+```
+
+If enviornment variables are not set the provider will use the default configuration.
+
+- Open **config/default.json** and set your database connection parameters, an example is provided in **config/example.json**.
 
 ```json
 {
@@ -56,6 +76,13 @@ https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/${sc
 ```
 
 ![agol feature-service](./assets/postgis-agol-featureservice.png)
+
+## Dependencies
+- [Koop](https://koopjs.github.io/)
+- [bluebird](http://bluebirdjs.com/docs/getting-started.html)
+- [config](https://lorenwest.github.io/node-config/)
+- [Lodash](https://lodash.com/)
+- [pg-promise](https://vitaly-t.github.io/pg-promise/)
 
 ## Contributors
 <a href="https://github.com/doneill/koop-provider-pg/graphs/contributors">

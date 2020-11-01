@@ -6,9 +6,9 @@ const {Data} = require('./repo');
 
 // Database connection details;
 const cn = {
-    host: process.env.HOST || config.db.host,
-    port: process.env.PORT || config.db.port,
-    database: process.env.DATABASE || config.db.database,
+    host: process.env.PG_HOST || config.db.host,
+    port: process.env.PG_PORT || config.db.port,
+    database: process.env.PG_DATABASE || config.db.database,
     user: process.env.PG_USER || config.db.user,
     password: process.env.PG_PASSWORD || config.db.password
 }

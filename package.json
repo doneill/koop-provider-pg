@@ -1,6 +1,6 @@
 {
   "name": "koop-provider-pg",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A postgis provider for koop",
   "main": "src/index.js",
   "directories": {
@@ -36,6 +36,7 @@
   "homepage": "https://github.com/doneill/koop-provider-pg",
   "keywords": [
     "koop",
+    "arcgis",
     "postgresql",
     "postgis"
   ]
