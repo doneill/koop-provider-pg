@@ -3,16 +3,10 @@
 
 ## Install
 
-**npm**
+Koop providers require you to first install [Koop](https://koopjs.github.io/).  You can add `koop-provider-pg` to your Koop server dependencies by installing it with npm:
 
 ```
-koop install koop-provider-pg
-```
-
-**koop-cli**
-
-```
-koop add provider koop-provider-pg
+=> koop add provider koop-provider-pg
 ```
 
 ## Database configuration
