@@ -5,7 +5,7 @@ L.esri.basemapLayer('DarkGray', {
 }).addTo(map);
 
 var postgis = L.esri.featureLayer({
-  url: 'http://localhost:8080/pg/rest/services/groot.fire_service_areas/FeatureServer/layers'
+  url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
 }).addTo(map);
 
 postgis.bindPopup(function (layer) {
