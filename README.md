@@ -42,11 +42,6 @@ If enviornment variables are not set the provider will use the default configura
 }
 ```
 
-## Test it out
-Run server:
-- `npm install`
-- `npm start`
-
 **Example API Query:**
 
 Replace `${schema}.${table}` with **schema.table** from your PostGIS db to translate.
@@ -75,6 +70,11 @@ https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/${sc
 ```
 
 ![agol feature-service](./assets/postgis-agol-featureservice.png)
+
+## Test it out
+Run server:
+- `npm install`
+- `npm start`
 
 ## Dependencies
 - [Koop](https://koopjs.github.io/)
