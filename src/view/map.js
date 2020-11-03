@@ -1,13 +1,13 @@
-var map = L.map('map').setView([36.9591311, -121.97182], 10);
+const map = L.map('map').setView([36.9591311, -121.97182], 10)
 
 L.esri.basemapLayer('DarkGray', {
   detectRetina: true
-}).addTo(map);
+}).addTo(map)
 
-var postgis = L.esri.featureLayer({
+const postgis = L.esri.featureLayer({
   url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
-}).addTo(map);
+}).addTo(map)
 
 postgis.bindPopup(function (layer) {
-  return L.Util.template('{name}', layer.feature.properties);
-});
+  return L.Util.template('{name}', layer.feature.properties)
+})

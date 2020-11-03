@@ -1,3 +1,3 @@
 module.exports = {
-    Data: require('./data')
-};
+  Data: require('./data')
+}
