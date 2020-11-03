@@ -1,8 +1,11 @@
 ## Koop PostGIS provider
 [![npm version][npm-img]][npm-url]
+[![Build Status][ci-img]][ci-url]
 
 [npm-img]: https://img.shields.io/npm/v/koop-provider-pg.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koop-provider-pg
+[ci-img]: https://travis-ci.org/doneill/koop-provider-pg.svg?branch=main
+[ci-url]: https://travis-ci.org/doneill/koop-provider-pg
 
 Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data, convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) and convert into the GeoServices specification supported by ArcGIS products.
 
