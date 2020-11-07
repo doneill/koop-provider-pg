@@ -4,8 +4,8 @@ SELECT jsonb_build_object(
 ) FROM (
   SELECT jsonb_build_object(
     'type',       'Feature',
-    'id',         gid,
+    'gid',         gid,
     'geometry',   ST_AsGeoJSON(ST_Transform(geom,4326))::jsonb,
-    'properties', to_jsonb(inputs) - 'gid' - 'geom'
+    'properties', to_jsonb(inputs) - 'geom'
   ) AS feature
   FROM (SELECT * FROM $[table:raw]) inputs) features;

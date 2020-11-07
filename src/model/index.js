@@ -20,7 +20,7 @@ Model.prototype.getData = function (req, callback) {
 
       geojson.metadata.title = geojson.metadata.name = schema
       geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
-      geojson.metadata.idField = process.env.PG_OBJECTID || ''
+      geojson.metadata.idField = process.env.PG_OBJECTID || 'gid'
       geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
 
       callback(null, geojson)

@@ -46,8 +46,8 @@ If database connection enviornment variables are not set the provider will use t
 }
 ```
 
-### OBJECTID
-Special consideration is given for id fields.  Koop by default will generate an `OBJECTID` field for your table data.  Optionally, you can add/set the following environment variable to be used for your data's feature unique identifier.
+### Custom `idField`
+The provider use `gid` as the OBJECTID unique identifier.  Optionally, if you prefer to use another column from you database table, you can add/set the following environment variable for your data's custom feature unique identifier.
 
 ```bash
 # value should be in "", eg. "id"
