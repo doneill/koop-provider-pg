@@ -21,7 +21,8 @@ Koop providers require you to first install [Koop](https://koopjs.github.io/).  
 
 Database connection parameters can be configured to any connection using the following environment variables:
 
-```
+```bash
+# All values should be in "" except PG_PORT
 PG_HOST=<host>
 PG_PORT=<port>
 PG_DATABASE=<database>
@@ -29,7 +30,7 @@ PG_USER=<user>
 PG_PASSWORD=<password>
 ```
 
-If enviornment variables are not set the provider will use the default configuration.
+If database connection enviornment variables are not set the provider will use the default configuration.
 
 - Open **config/default.json** and set your database connection parameters, an example is provided in **config/example.json**.
 
@@ -43,6 +44,14 @@ If enviornment variables are not set the provider will use the default configura
     "password": "password"
   }
 }
+```
+
+### OBJECTID
+Special consideration is given for id fields.  Koop by default will generate an `OBJECTID` field for your table data.  Optionally, you can add/set the following environment variable to be used for your data's feature unique identifier.
+
+```bash
+# value should be in "", eg. "id"
+export PG_OBJECTID=<idField>
 ```
 
 **Example API Query:**
