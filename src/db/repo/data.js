@@ -6,9 +6,10 @@ class DataRepository {
     this.pgp = pgp
   }
 
-  async createGeoJson (values) {
+  async createGeoJson (id, values) {
     console.log('schema.table:', values)
     return this.db.oneOrNone(sql.createGeoJson, {
+      id: id,
       table: values
     })
   }

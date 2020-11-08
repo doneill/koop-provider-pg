@@ -8,9 +8,11 @@ Model.prototype.getData = function (req, callback) {
   const schema = splitPath[0]
   const table = splitPath[1]
 
+  const id = process.env.PG_OBJECTID || 'gid'
+
   if (!table) callback(new Error('The "id" parameter must be in the form of "schema.table"'))
 
-  db.data.createGeoJson(schema + '.' + table)
+  db.data.createGeoJson(id, schema + '.' + table)
     .then(result => {
       const geojson = result.jsonb_build_object
 
@@ -20,7 +22,7 @@ Model.prototype.getData = function (req, callback) {
 
       geojson.metadata.title = geojson.metadata.name = schema
       geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
-      geojson.metadata.idField = process.env.PG_OBJECTID || 'gid'
+      geojson.metadata.idField = id
       geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
 
       callback(null, geojson)
