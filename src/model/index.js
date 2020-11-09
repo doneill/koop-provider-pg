@@ -12,23 +12,33 @@ Model.prototype.getData = function (req, callback) {
 
   if (!table) callback(new Error('The "id" parameter must be in the form of "schema.table"'))
 
-  db.data.createGeoJson(id, schema + '.' + table)
+  db.data.getGeometryColumnName(schema, table)
     .then(result => {
-      const geojson = result.jsonb_build_object
+      const geom = result.f_geometry_column
+      console.log('geometry column name: ', geom)
 
-      if (geojson.metadata === undefined || geojson.metadata === null) {
-        geojson.metadata = {}
-      }
+      db.data.createGeoJson(id, geom, schema + '.' + table)
+        .then(result => {
+          const geojson = result.jsonb_build_object
 
-      geojson.metadata.title = geojson.metadata.name = schema
-      geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
-      geojson.metadata.idField = id
-      geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
+          if (geojson.metadata === undefined || geojson.metadata === null) {
+            geojson.metadata = {}
+          }
 
-      callback(null, geojson)
+          geojson.metadata.title = geojson.metadata.name = schema
+          geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
+          geojson.metadata.idField = id
+          geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
+
+          callback(null, geojson)
+        })
+        .catch(error => {
+          callback(new Error(error + ' on ' + schema + '.' + table))
+          console.error(error)
+        })
     })
     .catch(error => {
-      callback(new Error(error + ' on ' + schema + '.' + table))
+      callback(new Error(error + ' on getGeometryColumn(' + schema + ', ' + table + ')'))
       console.error(error)
     })
 }

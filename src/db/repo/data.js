@@ -1,4 +1,4 @@
-const { geojson: sql } = require('../sql')
+const { table: sql } = require('../sql')
 
 class DataRepository {
   constructor (db, pgp) {
@@ -6,10 +6,18 @@ class DataRepository {
     this.pgp = pgp
   }
 
-  async createGeoJson (id, values) {
+  async getGeometryColumnName (schema, table) {
+    return this.db.oneOrNone(sql.getGeometryColumnName, {
+      schema: schema,
+      table: table
+    })
+  }
+
+  async createGeoJson (id, geom, values) {
     console.log('schema.table:', values)
     return this.db.oneOrNone(sql.createGeoJson, {
       id: id,
+      geom: geom,
       table: values
     })
   }

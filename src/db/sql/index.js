@@ -2,8 +2,9 @@ const { QueryFile } = require('pg-promise')
 const { join: joinPath } = require('path')
 
 module.exports = {
-  geojson: {
-    createGeoJson: sql('createGeoJson.sql')
+  table: {
+    createGeoJson: sql('createGeoJson.sql'),
+    getGeometryColumnName: sql('getGeometryColumnName.sql')
   }
 }
 
