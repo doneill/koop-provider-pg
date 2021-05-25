@@ -9,14 +9,6 @@
 
 Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS](https://postgis.net/) spatial data, convert it to [GeoJSON](https://geojson.org/) as input into [Koop](https://koopjs.github.io/) and convert into the GeoServices specification supported by ArcGIS products.
 
-## Install
-
-Koop providers require you to first install [Koop](https://koopjs.github.io/).  You can add `koop-provider-pg` to your Koop server dependencies by installing it with npm:
-
-```
-=> koop add provider koop-provider-pg
-```
-
 ## Database configuration
 
 Database connection parameters can be configured to any connection using the following environment variables:
@@ -30,7 +22,7 @@ PG_USER=<user>
 PG_PASSWORD=<password>
 ```
 
-If database connection enviornment variables are not set the provider will use the default configuration.
+If database connection environment variables are not set the provider will use the default configuration.
 
 - Open **config/default.json** and set your database connection parameters, an example is provided in **config/example.json**.
 
@@ -52,6 +44,26 @@ The provider use `gid` as the OBJECTID unique identifier.  Optionally, if you pr
 ```bash
 # value should be in "", eg. "id"
 export PG_OBJECTID=<idField>
+```
+
+## Install
+Koop providers require you to first install [Koop](https://koopjs.github.io/).  You can add `koop-provider-pg` to your Koop server dependencies by installing it with npm:
+
+```bash
+# install koop cli using npm
+$ npm install -g @koopjs/cli
+
+# create a new koop app
+$ koop new app pg-koop
+
+# cd into the pg-koop app
+$ cd pg-koop
+
+# install provider
+$ koop add provider koop-provider-pg
+
+# start koop server
+$ koop serve
 ```
 
 **Example API Query:**
