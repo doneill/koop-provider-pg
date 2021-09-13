@@ -1,6 +1,5 @@
 ## Koop PostGIS provider
 [![npm version][npm-img]][npm-url]
-[![Build Status][ci-img]][ci-url]
 ![Build Status](https://github.com/doneill/koop-provider-pg/actions/workflows/node.js.yml/badge.svg)
 
 [npm-img]: https://img.shields.io/npm/v/koop-provider-pg.svg?style=flat-square
