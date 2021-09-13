@@ -1,6 +1,6 @@
 ## Koop PostGIS provider
 [![npm version][npm-img]][npm-url]
-[![Build Status]][ci-url]
+![Build Status][ci-url]
 
 [npm-img]: https://img.shields.io/npm/v/koop-provider-pg.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/koop-provider-pg
