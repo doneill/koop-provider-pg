@@ -14,7 +14,6 @@ class DataRepository {
   }
 
   async createGeoJson (id, geom, values) {
-    console.log('schema.table:', values)
     return this.db.oneOrNone(sql.createGeoJson, {
       id: id,
       geom: geom,

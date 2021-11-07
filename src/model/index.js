@@ -15,21 +15,22 @@ Model.prototype.getData = function (req, callback) {
   db.data.getGeometryColumnName(schema, table)
     .then(result => {
       const geom = result.f_geometry_column
-      console.log('geometry column name: ', geom)
 
       db.data.createGeoJson(id, geom, schema + '.' + table)
         .then(result => {
           const geojson = result.jsonb_build_object
 
-          if (geojson.metadata === undefined || geojson.metadata === null) {
-            geojson.metadata = {}
-          }
-
           geojson.description = 'PG Koop Feature Service'
-          geojson.metadata.title = geojson.metadata.name = schema
-          geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
-          geojson.metadata.idField = id
-          geojson.metadata.geometryType = _.get(geojson, 'features[0].geometry.type')
+
+          if (geojson.metadata === undefined || geojson.metadata === null) {
+            geojson.metadata = {
+              title: schema,
+              name: schema,
+              description: 'GeoJSON from PostGIS ' + schema + '.' + table,
+              idField: id,
+              geometryType: _.get(geojson, 'features[0].geometry.type')
+            }
+          }
 
           callback(null, geojson)
         })
