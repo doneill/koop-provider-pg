@@ -1,6 +1,5 @@
-// utils
-
-var getValue = function (obj, key) {
+/* eslint-disable no-unused-vars */
+var getValue = (obj, key) => {
   var type = typeof key
 
   if (type === 'string' || type === 'number') {
@@ -9,9 +8,12 @@ var getValue = function (obj, key) {
     }).split('.')
   }
 
-  for (var i = 0, l = key.length, currentkey; i < l; i++) {
-    if (obj.hasOwnProperty(key[i])) obj = obj[key[i]]
-    else return undefined
+  for (let i = 0; i < key.length; i++) {
+    if (Object.prototype.hasOwnProperty.call(obj, key[i])) {
+      obj = obj[key[i]]
+    } else {
+      return undefined
+    }
   }
 
   return obj
