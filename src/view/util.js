@@ -3,7 +3,7 @@
 var getValue = function (obj, key) {
   var type = typeof key
 
-  if (type == 'string' || type == 'number') {
+  if (type === 'string' || type === 'number') {
     key = ('' + key).replace(/\[(.*?)\]/, function (m, key) {
       return '.' + key
     }).split('.')
