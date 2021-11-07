@@ -25,8 +25,8 @@ Model.prototype.getData = (req, callback) => {
           if (geojson.metadata === undefined || geojson.metadata === null) {
             geojson.metadata = {
               title: schema,
-              name: table,
-              description: 'GeoJSON from PostGIS ' + schema + '.' + table,
+              name: schema + '.' + table,
+              description: 'This feature layer generated with Koop PostGIS Provider (koop-provider-pg), for more information visit https://github.com/doneill/koop-provider-pg',
               idField: id,
               geometryType: _.get(geojson, 'features[0].geometry.type')
             }
