@@ -3,7 +3,7 @@ const { db } = require('../db')
 
 function Model (koop) {}
 
-Model.prototype.getData = function (req, callback) {
+Model.prototype.getData = (req, callback) => {
   const splitPath = req.params.id.split('.')
   const schema = splitPath[0]
   const table = splitPath[1]
