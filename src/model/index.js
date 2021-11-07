@@ -25,7 +25,7 @@ Model.prototype.getData = (req, callback) => {
           if (geojson.metadata === undefined || geojson.metadata === null) {
             geojson.metadata = {
               title: schema,
-              name: schema,
+              name: table,
               description: 'GeoJSON from PostGIS ' + schema + '.' + table,
               idField: id,
               geometryType: _.get(geojson, 'features[0].geometry.type')
