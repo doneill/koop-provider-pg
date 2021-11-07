@@ -18,6 +18,13 @@
     integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
     crossorigin=""></script>
 
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+
+  <script src="util.js"></script>
+
   <style>
     body { margin:0; padding:0; }
     #map { position: absolute; top:0; bottom:0; right:0; left:0; }
@@ -27,19 +34,36 @@
 
 <div id="map"></div>
 <script>
-  const map = L.map('map').setView([36.9591311, -121.97182], 10)
+  // replace ${schema}.${table}
+  const featureLayerUrl = 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer'
 
-  L.esri.basemapLayer('DarkGray', {
-    detectRetina: true
-  }).addTo(map)
+  $.getJSON(featureLayerUrl, function(data) {
 
-  const postgis = L.esri.featureLayer({
-    url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
-  }).addTo(map)
+    const bounds = L.latLngBounds(
+        [
+          getValue(data, "fullExtent.ymax"),
+          getValue(data, "fullExtent.xmin")
+        ], [
+          getValue(data, "fullExtent.ymin"),
+          getValue(data, "fullExtent.xmax")
+        ]
+      )
 
-  postgis.bindPopup(function (layer) {
-    return L.Util.template('{name}', layer.feature.properties)
+    const map = L.map('map').fitBounds(bounds)
+
+    L.esri.basemapLayer('DarkGray', {
+      detectRetina: true
+    }).addTo(map)
+
+    const postgis = L.esri.featureLayer({
+      url: featureLayerUrl + '/layers'
+    }).addTo(map)
+
+    postgis.bindPopup(function (layer) {
+      return L.Util.template('{name}', layer.feature.properties)
+    })
   })
+
 </script>
 </body>
 
