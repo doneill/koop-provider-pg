@@ -25,7 +25,7 @@ Model.prototype.getData = function (req, callback) {
             geojson.metadata = {}
           }
 
-          geojson.description = "PG Koop Feature Service"
+          geojson.description = 'PG Koop Feature Service'
           geojson.metadata.title = geojson.metadata.name = schema
           geojson.metadata.description = 'GeoJSON from PostGIS ' + schema + '.' + table
           geojson.metadata.idField = id
