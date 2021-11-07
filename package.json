@@ -27,6 +27,9 @@
     "tap-spec": "^5.0.0",
     "tape": "^5.0.0"
   },
+    "scripts": {
+    "test": "jest"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doneill/koop-provider-pg.git"
