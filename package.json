@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "koop serve",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint . --ext .js"
   },
   "dependencies": {
     "bluebird": "^3.7.2",
@@ -21,6 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@koopjs/cli": "^0.6.0",
+    "eslint": "^8.15.0",
     "jest": "^27.3.1",
     "nock": "^11.7.2",
     "standard": "^14.3.4",
