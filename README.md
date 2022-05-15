@@ -13,12 +13,12 @@ Koop [provider](https://koopjs.github.io/docs/usage/provider) to query [PostGIS]
 Database connection parameters can be configured to any connection using the following environment variables:
 
 ```bash
-# All values should be in "" except PG_PORT
-PG_HOST=<host>
-PG_PORT=<port>
-PG_DATABASE=<database>
-PG_USER=<user>
-PG_PASSWORD=<password>
+# All values should be string values except PG_PORT
+PG_HOST="${HOST}"
+PG_PORT=${PORT}
+PG_DATABASE="${DATABASE}"
+PG_USER="${USER}"
+PG_PASSWORD="${PASSWORD}"
 ```
 
 If database connection environment variables are not set the provider will use the default configuration.
@@ -38,11 +38,11 @@ If database connection environment variables are not set the provider will use t
 ```
 
 ### Custom `idField`
-The provider use `gid` as the OBJECTID unique identifier.  Optionally, if you prefer to use another column from you database table, you can add/set the following environment variable for your data's custom feature unique identifier.
+The provider use `gid` as the OBJECTID unique identifier.  Optionally, if you prefer to use another column from your database table, you can add/set the following environment variable for your data's custom feature unique identifier.
 
 ```bash
-# value should be in "", eg. "id"
-export PG_OBJECTID=<idField>
+# value should be String, eg. "id"
+export PG_OBJECTID="${OBJECT_ID}"
 ```
 
 ## Install
