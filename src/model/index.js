@@ -15,8 +15,9 @@ Model.prototype.getData = (req, callback) => {
   db.data.getGeometryColumnName(schema, table)
     .then(result => {
       const geom = result.f_geometry_column
+      const srid = result.srid
 
-      db.data.createGeoJson(id, geom, schema + '.' + table)
+      db.data.createGeoJson(id, geom, srid, schema + '.' + table)
         .then(result => {
           const geojson = result.jsonb_build_object
 

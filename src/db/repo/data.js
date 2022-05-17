@@ -13,10 +13,11 @@ class DataRepository {
     })
   }
 
-  async createGeoJson (id, geom, values) {
+  async createGeoJson (id, geom, srid, values) {
     return this.db.oneOrNone(sql.createGeoJson, {
       id: id,
       geom: geom,
+      srid: srid,
       table: values
     })
   }
