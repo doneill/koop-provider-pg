@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-var getValue = (obj, key) => {
-  var type = typeof key
+const getValue = (obj, key) => {
+  const type = typeof key
 
   if (type === 'string' || type === 'number') {
-    key = ('' + key).replace(/\[(.*?)\]/, function (m, key) {
+    key = ('' + key).replace(/\[(.*?)]/, function (m, key) {
       return '.' + key
     }).split('.')
   }
