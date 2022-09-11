@@ -1,5 +1,13 @@
+build/
 node_modules
 *.log
 
+# IDE
 *.sublime-project
 *.sublime-workspace
+*.vscode
+*.fleet
+.idea
+
+# OSX
+.DS_Store
