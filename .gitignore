@@ -9,5 +9,8 @@ node_modules
 *.fleet
 .idea
 
+# data
+fs.json
+
 # OSX
 .DS_Store
