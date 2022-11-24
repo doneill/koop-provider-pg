@@ -1,50 +1,53 @@
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>VectorTileLayer</title>
     <style>
-      html,
-      body,
-      #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.19/esri/themes/light/main.css" />
     <script src="https://js.arcgis.com/4.19/"></script>
 
     <script>
-      require(["esri/Map", "esri/views/MapView", "esri/layers/VectorTileLayer"], function(
-        Map,
-        MapView,
-        VectorTileLayer
-      ) {
-        // Create a Map
-        const map = new Map({
-          basemap: "dark-gray-vector"
+        require(["esri/Map", "esri/views/MapView", "esri/layers/VectorTileLayer"], function (
+            Map,
+            MapView,
+            VectorTileLayer
+        ) {
+            // Create a Map
+            const map = new Map({
+                basemap: "dark-gray-vector"
+            });
+            // Make map view and bind it to the map
+            const view = new MapView({
+                container: 'viewDiv',
+                map: map,
+                center: [-151.32991, 65.06699],
+                zoom: 4,
+            })
+
+            const tileLayer = new VectorTileLayer({
+                url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/VectorTileServer',
+            })
+            map.add(tileLayer);
         });
-        // Make map view and bind it to the map
-        const view = new MapView({
-          container: 'viewDiv',
-          map: map,
-          center: [-122.31082, 47.60606],
-          zoom: 12,
-        })
-
-        const tileLayer = new VectorTileLayer({
-          url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/VectorTileServer',
-        })
-        map.add(tileLayer);
-      });
     </script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div id="viewDiv"></div>
-  </body>
+</body>
+
 </html>
