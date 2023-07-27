@@ -1,26 +1,41 @@
-const { table: sql } = require('../sql')
+const { table: sql } = require('../sql');
 
 class DataRepository {
-  constructor (db, pgp) {
-    this.db = db
-    this.pgp = pgp
+  constructor(db, pgp) {
+    this.db = db;
+    this.pgp = pgp;
   }
 
-  async getGeometryColumnName (schema, table) {
-    return this.db.oneOrNone(sql.getGeometryColumnName, {
-      schema: schema,
-      table: table
-    })
+  async getGeometryColumnName(schema, table) {
+    try {
+      const result = await this.db.oneOrNone(sql.getGeometryColumnName, {
+        schema: schema,
+        table: table,
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Error in getGeometryColumnName:', error);
+      throw error;
+    }
   }
 
-  async createGeoJson (id, geom, srid, values) {
-    return this.db.oneOrNone(sql.createGeoJson, {
-      id: id,
-      geom: geom,
-      srid: srid,
-      table: values
-    })
+  async createGeoJson(id, geom, srid, values) {
+    try {
+      const result = await this.db.oneOrNone(sql.createGeoJson, {
+        id: id,
+        geom: geom,
+        srid: srid,
+        table: values,
+      });
+
+      return result;
+    } catch (error) {
+      console.error('Error in createGeoJson:', error);
+      throw error;
+    }
   }
 }
 
-module.exports = DataRepository
+module.exports = DataRepository;
+
