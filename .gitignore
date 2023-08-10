@@ -11,6 +11,8 @@ node_modules
 
 # data
 fs.json
+fs.hurl
+jless
 
 # OSX
 .DS_Store
