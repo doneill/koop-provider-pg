@@ -5,5 +5,9 @@
     "database": "",
     "user": "",
     "password": ""
+  },
+  "ssl": {
+    "enabled": false,
+    "rejectUnauthorized": false
   }
 }
