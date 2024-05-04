@@ -70,7 +70,7 @@ $ koop serve
 Replace `${schema}.${table}` with **schema.table** from your PostGIS db to translate.
 
 ```bash
-curl localhost:8080/pg/${schema}.${table}/FeatureServer/0/query
+curl localhost:8080/pg/${schema}.${table}/rest/services/FeatureServer/0/query
 ```
 
 **Add as Feature Layer**
@@ -80,7 +80,7 @@ curl localhost:8080/pg/${schema}.${table}/FeatureServer/0/query
 ```javascript
 // esri leaflet feature layer
 L.esri.featureLayer({
-    url: 'http://localhost:8080/pg/${schema}.${table}/FeatureServer/layers'
+    url: 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/layers'
   }).addTo(map);
 ````
 
@@ -89,7 +89,7 @@ L.esri.featureLayer({
 - ArcGIS Online WebMap
 
 ```bash
-https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/${schema}.${table}/FeatureServer/
+https://www.arcgis.com/home/webmap/viewer.html?url=http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/
 ```
 
 ![agol feature-service](./assets/postgis-agol-featureservice.png)
