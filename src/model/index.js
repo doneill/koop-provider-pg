@@ -15,6 +15,11 @@ class Model {
         throw new Error('The "id" parameter must be in the form of "schema.table"');
 
       const result = await db.data.getGeometryColumnName(schema, table);
+
+      if (!result) {
+        throw new Error('Invalid result from getGeometryColumnName');
+      }
+      
       const geom = result.f_geometry_column;
       const srid = result.srid;
 
