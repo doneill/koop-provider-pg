@@ -20,13 +20,15 @@ class DataRepository {
     }
   }
 
-  async createGeoJson(id, geom, srid, values) {
+  async createGeoJson(id, geom, srid, values, limit, offset) {
     try {
       const result = await this.db.oneOrNone(sql.createGeoJson, {
         id: id,
         geom: geom,
         srid: srid,
         table: values,
+        limit: limit,
+        offset: offset
       });
 
       return result;

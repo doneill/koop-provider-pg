@@ -10,6 +10,7 @@ class Model {
       const table = splitPath[1];
 
       const id = process.env.PG_OBJECTID || 'gid';
+      const pgLimit = process.env.PG_LIMIT || 10000000;
 
       if (!table)
         throw new Error('The "id" parameter must be in the form of "schema.table"');
@@ -22,8 +23,10 @@ class Model {
       
       const geom = result.f_geometry_column;
       const srid = result.srid;
+      const limit = parseInt(pgLimit);
+      const offset = 0;
 
-      const geojsonResult = await db.data.createGeoJson(id, geom, srid, schema + '.' + table);
+      const geojsonResult = await db.data.createGeoJson(id, geom, srid, schema + '.' + table, limit, offset);
       let geojson = geojsonResult.jsonb_build_object;
 
       geojson.description = 'PG Koop Feature Service';
