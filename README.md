@@ -45,6 +45,14 @@ The provider use `gid` as the OBJECTID unique identifier.  Optionally, if you pr
 export PG_OBJECTID="${OBJECT_ID}"
 ```
 
+### Custom PostgreSQL LIMIT
+The provider uses Postgres JSONB which limits document size to 255MB in size.  To optimize returning data from large datasets exceeding 255MB you can optionally add a limit to just a portion of the rows that are used to create the GeoJSON data. The default limit is 10000000 rows.  
+
+```bash
+# value should be String, e.g. "1000"
+export PG_LIMIT="${LIMIT}"
+```
+
 ## Install
 Koop providers require you to first install [Koop](https://koopjs.github.io/).  You can add `koop-provider-pg` to your Koop server dependencies by installing it with npm:
 
