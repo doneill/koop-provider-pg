@@ -31,7 +31,7 @@ class DataRepository {
         offset: offset
       });
 
-      return result;
+      return result.jsonb_build_object;
     } catch (error) {
       console.error('Error in createGeoJson:', error);
       throw error;
@@ -40,4 +40,3 @@ class DataRepository {
 }
 
 module.exports = DataRepository;
-
