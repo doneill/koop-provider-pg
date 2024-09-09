@@ -78,7 +78,7 @@ $ koop serve
 Replace `${schema}.${table}` with **schema.table** from your PostGIS db to translate.
 
 ```bash
-curl localhost:8080/pg/${schema}.${table}/rest/services/FeatureServer/0/query
+curl localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer/0/query
 ```
 
 **Add as Feature Layer**
