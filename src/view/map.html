@@ -1,81 +1,80 @@
 j<html lang="">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Feature Layer Viewer</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta charset="utf-8" />
+  <title>Feature Layer Viewer</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            left: 0;
-        }
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  </style>
 
-    </style>
+  <!-- Load Leaflet from CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
 
-    <!-- Load Leaflet from CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
+    integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
+    crossorigin=""></script>
 
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet@2.5.0/dist/esri-leaflet.js"
-        integrity="sha512-ucw7Grpc+iEQZa711gcjgMBnmd9qju1CICsRaryvX7HJklK0pGl/prxKvtHwpgm5ZHdvAil7YPxI1oWPOWK3UQ=="
-        crossorigin=""></script>
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <!-- jquery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="util.js"></script>
 
-    <script src="util.js"></script>
+  <script>
+    // replace ${schema}.${table}
+    const featureLayerUrl = 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer'
 
-    <script>
-        // replace ${schema}.${table}
-        const featureLayerUrl = 'http://localhost:8080/pg/rest/services/${schema}.${table}/FeatureServer'
+    $.getJSON(featureLayerUrl, function (data) {
 
-        $.getJSON(featureLayerUrl, function (data) {
+      const bounds = L.latLngBounds(
+        [
+          getValue(data, "fullExtent.ymax"),
+          getValue(data, "fullExtent.xmin")
+        ], [
+        getValue(data, "fullExtent.ymin"),
+        getValue(data, "fullExtent.xmax")
+      ]
+      )
 
-            const bounds = L.latLngBounds(
-                [
-                    getValue(data, "fullExtent.ymax"),
-                    getValue(data, "fullExtent.xmin")
-                ], [
-                getValue(data, "fullExtent.ymin"),
-                getValue(data, "fullExtent.xmax")
-            ]
-            )
+      const map = L.map('map').fitBounds(bounds)
 
-            const map = L.map('map').fitBounds(bounds)
+      L.esri.basemapLayer('DarkGray', {
+        detectRetina: true
+      }).addTo(map)
 
-            L.esri.basemapLayer('DarkGray', {
-                detectRetina: true
-            }).addTo(map)
+      const postgis = L.esri.featureLayer({
+        url: featureLayerUrl + '/layers'
+      }).addTo(map)
 
-            const postgis = L.esri.featureLayer({
-                url: featureLayerUrl + '/layers'
-            }).addTo(map)
+      postgis.bindPopup(function (layer) {
+        return L.Util.template('{name}', layer.feature.properties)
+      })
+    })
 
-            postgis.bindPopup(function (layer) {
-                return L.Util.template('{name}', layer.feature.properties)
-            })
-        })
-
-    </script>
+  </script>
 </head>
 
 <body>
-    <div id="map"></div>
+  <div id="map"></div>
 </body>
 
 </html>
