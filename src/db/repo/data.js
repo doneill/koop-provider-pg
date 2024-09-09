@@ -13,9 +13,6 @@ class DataRepository {
         table: table,
       });
 
-      if (!result || !result.f_geometry_column || !result.srid) {
-        throw new Error('Invalid result from getGeometryColumnName');
-      }
       return result;
     } catch (error) {
       console.error('Error in getGeometryColumnName:', error);
@@ -33,11 +30,6 @@ class DataRepository {
         limit: limit,
         offset: offset
       });
-
-      if (!result || !result.jsonb_build_object) {
-        console.error('Unexpected result structure:', result);
-        throw new Error('Database query returned unexpected result structure');
-      }
 
       return result.jsonb_build_object;
     } catch (error) {

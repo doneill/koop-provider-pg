@@ -16,20 +16,39 @@ class Model {
         throw new Error('The "id" parameter must be in the form of "schema.table"');
 
       const geomColumnName = await db.data.getGeometryColumnName(schema, table);
-      if (!geomColumnName) {
-        throw new Error('Invalid result from getGeometryColumnName');
+      if (!geomColumnName || !geomColumnName.f_geometry_column || !geomColumnName.srid) {
+        console.log(`Table ${schema}.${table} does not have a geometry column.`);
+        return callback(null, {
+          type: 'FeatureCollection',
+          features: [],
+          metadata: {
+            title: schema,
+            name: schema + '.' + table,
+            description: 'This table does not contain spatial data.',
+            geometryType: null
+          }
+        });
       }
       
-      const geom = geomColumnName?.f_geometry_column | 'null';
-      const srid = geomColumnName?.srid | 'null';
+      const geom = geomColumnName.f_geometry_column;
+      const srid = geomColumnName.srid;
       const limit = parseInt(pgLimit);
       const offset = 0;
 
       const geojson = await db.data.createGeoJson(id, geom, srid, schema + '.' + table, limit, offset);
       
       if (!geojson || typeof geojson !== 'object' || !geojson.type || !geojson.features) {
-        console.error('Unexpected result from createGeoJson:', geojson);
-        throw new Error('Failed to create GeoJSON: Unexpected result structure');
+        console.log(`Unexpected result from createGeoJson.`);
+        return callback(null, {
+          type: 'FeatureCollection',
+          features: [],
+          metadata: {
+            title: schema,
+            name: schema + '.' + table,
+            description: 'no-data',
+            geometryType: null
+          }
+        });
       }
 
       geojson.description = 'PG Koop Feature Service';
