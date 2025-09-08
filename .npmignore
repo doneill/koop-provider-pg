@@ -1,0 +1,12 @@
+.DS_Store
+.git
+.github
+.idea
+.editorconfig
+.eslint*
+.nyc_output
+
+assets/
+coverage/
+docs/
+test/
