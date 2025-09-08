@@ -1,0 +1,49 @@
+const winston = require('winston')
+
+const logLevel = process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'info' : 'debug')
+
+const logger = winston.createLogger({
+  level: logLevel,
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    winston.format.splat(),
+    process.env.NODE_ENV === 'production' 
+      ? winston.format.json()
+      : winston.format.combine(
+          winston.format.colorize(),
+          winston.format.printf(({ timestamp, level, message, context, ...meta }) => {
+            const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : ''
+            return `${timestamp} ${level}: [${context}] ${message}${metaStr}`
+          })
+        )
+  ),
+  defaultMeta: { 
+    service: 'koop-provider-pg',
+    version: require('../../package.json').version 
+  },
+  transports: [
+    new winston.transports.Console()
+  ]
+})
+
+
+function createLogger(context) {
+  return {
+    debug: (message, meta = {}) => logger.debug(message, { context, ...meta }),
+    info: (message, meta = {}) => logger.info(message, { context, ...meta }),
+    warn: (message, meta = {}) => logger.warn(message, { context, ...meta }),
+    error: (message, error = null, meta = {}) => {
+      const errorMeta = error ? {
+        error: {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        }
+      } : {}
+      logger.error(message, { context, ...errorMeta, ...meta })
+    }
+  }
+}
+
+module.exports = { logger, createLogger }

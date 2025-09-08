@@ -1,4 +1,8 @@
-const { table: sql } = require('../sql');
+const { table: sql } = require('../sql')
+const { createLogger } = require('../../utils/logger')
+const { DatabaseError } = require('../../utils/errors')
+
+const log = createLogger('DataRepository')
 
 class DataRepository {
   constructor(db, pgp) {
@@ -15,8 +19,14 @@ class DataRepository {
 
       return result;
     } catch (error) {
-      console.error('Error in getGeometryColumnName:', error);
-      throw error;
+      const dbError = new DatabaseError(
+        'Failed to query geometry column information',
+        error,
+        { schema, table }
+      );
+      
+      log.error('Error in getGeometryColumnName', error, { schema, table });
+      throw dbError;
     }
   }
 
@@ -33,8 +43,14 @@ class DataRepository {
 
       return result.jsonb_build_object;
     } catch (error) {
-      console.error('Error in createGeoJson:', error);
-      throw error;
+      const dbError = new DatabaseError(
+        'Failed to create GeoJSON from PostGIS data',
+        error,
+        { id, geom, srid, table: values, limit, offset }
+      );
+      
+      log.error('Error in createGeoJson', error, { id, geom, srid, table: values, limit, offset });
+      throw dbError;
     }
   }
 }

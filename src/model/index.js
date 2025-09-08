@@ -1,23 +1,34 @@
 const _ = require('lodash')
 const { db } = require('../db')
+const { createLogger } = require('../utils/logger')
+const { ValidationError, DataNotFoundError, DatabaseError } = require('../utils/errors')
+
+const log = createLogger('Model')
 
 class Model {
   constructor() { }
 
   async getData(req, callback) {
+    let schema, table, id
+    
     try {
       const splitPath = req.params.id.split('.');
-      const schema = splitPath[0];
-      const table = splitPath[1];
-      const id = process.env.PG_OBJECTID || 'gid';
+      schema = splitPath[0];
+      table = splitPath[1];
+      id = process.env.PG_OBJECTID || 'gid';
       const pgLimit = process.env.PG_LIMIT || 10000000;
 
-      if (!table)
-        throw new Error('The "id" parameter must be in the form of "schema.table"');
+      if (!table) {
+        throw new ValidationError('The "id" parameter must be in the form of "schema.table"', { 
+          providedId: req.params.id,
+          schema,
+          table 
+        });
+      }
 
       const geomColumnName = await db.data.getGeometryColumnName(schema, table);
       if (!geomColumnName || !geomColumnName.f_geometry_column || !geomColumnName.srid) {
-        console.log(`Table ${schema}.${table} does not have a geometry column.`);
+        log.warn('Table does not have a geometry column', { schema, table });
         return callback(null, {
           type: 'FeatureCollection',
           features: [],
@@ -38,7 +49,7 @@ class Model {
       const geojson = await db.data.createGeoJson(id, geom, srid, schema + '.' + table, limit, offset);
       
       if (!geojson || typeof geojson !== 'object' || !geojson.type || !geojson.features) {
-        console.log(`Unexpected result from createGeoJson.`);
+        log.warn('Unexpected result from createGeoJson', { schema, table, result: typeof geojson });
         return callback(null, {
           type: 'FeatureCollection',
           features: [],
@@ -64,8 +75,29 @@ class Model {
 
       callback(null, geojson);
     } catch (error) {
-      console.error('Error in getData:', error);
-      callback(error);
+      if (error instanceof ValidationError || error instanceof DataNotFoundError) {
+        log.warn('Request validation failed', { 
+          errorType: error.name,
+          message: error.message,
+          details: error.details 
+        });
+        callback(error);
+        return;
+      }
+
+      const dbError = new DatabaseError(
+        'Failed to retrieve data from PostGIS',
+        error,
+        { schema, table, id }
+      );
+      
+      log.error('Database operation failed', error, { 
+        schema, 
+        table, 
+        id,
+        originalError: error.message 
+      });
+      callback(dbError);
     }
   }
 }
