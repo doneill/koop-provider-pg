@@ -1,6 +1,6 @@
 const { table: sql } = require('../sql')
 const { createLogger } = require('../../utils/logger')
-const { DatabaseError, DataNotFoundError } = require('../../utils/errors')
+const { DatabaseError } = require('../../utils/errors')
 
 const log = createLogger('DataRepository')
 

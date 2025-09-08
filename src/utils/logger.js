@@ -1,5 +1,4 @@
 const winston = require('winston')
-const config = require('config')
 
 const logLevel = process.env.LOG_LEVEL || (process.env.NODE_ENV === 'production' ? 'info' : 'debug')
 

@@ -9,11 +9,13 @@ class Model {
   constructor() { }
 
   async getData(req, callback) {
+    let schema, table, id
+    
     try {
       const splitPath = req.params.id.split('.');
-      const schema = splitPath[0];
-      const table = splitPath[1];
-      const id = process.env.PG_OBJECTID || 'gid';
+      schema = splitPath[0];
+      table = splitPath[1];
+      id = process.env.PG_OBJECTID || 'gid';
       const pgLimit = process.env.PG_LIMIT || 10000000;
 
       if (!table) {

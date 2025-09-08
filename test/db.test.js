@@ -1,5 +1,4 @@
 const config = require('config')
-const db = require('../src/db')
 
 var port = config.db.port
 
