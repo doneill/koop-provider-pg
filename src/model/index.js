@@ -1,5 +1,8 @@
 const _ = require('lodash')
 const { db } = require('../db')
+const { createLogger } = require('../utils/logger')
+
+const log = createLogger('Model')
 
 class Model {
   constructor() { }
@@ -17,7 +20,7 @@ class Model {
 
       const geomColumnName = await db.data.getGeometryColumnName(schema, table);
       if (!geomColumnName || !geomColumnName.f_geometry_column || !geomColumnName.srid) {
-        console.log(`Table ${schema}.${table} does not have a geometry column.`);
+        log.warn('Table does not have a geometry column', { schema, table });
         return callback(null, {
           type: 'FeatureCollection',
           features: [],
@@ -38,7 +41,7 @@ class Model {
       const geojson = await db.data.createGeoJson(id, geom, srid, schema + '.' + table, limit, offset);
       
       if (!geojson || typeof geojson !== 'object' || !geojson.type || !geojson.features) {
-        console.log(`Unexpected result from createGeoJson.`);
+        log.warn('Unexpected result from createGeoJson', { schema, table, result: typeof geojson });
         return callback(null, {
           type: 'FeatureCollection',
           features: [],
@@ -64,7 +67,7 @@ class Model {
 
       callback(null, geojson);
     } catch (error) {
-      console.error('Error in getData:', error);
+      log.error('Error in getData', error, { schema, table, id });
       callback(error);
     }
   }

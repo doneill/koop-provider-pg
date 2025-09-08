@@ -1,4 +1,7 @@
-const { table: sql } = require('../sql');
+const { table: sql } = require('../sql')
+const { createLogger } = require('../../utils/logger')
+
+const log = createLogger('DataRepository')
 
 class DataRepository {
   constructor(db, pgp) {
@@ -15,7 +18,7 @@ class DataRepository {
 
       return result;
     } catch (error) {
-      console.error('Error in getGeometryColumnName:', error);
+      log.error('Error in getGeometryColumnName', error, { schema, table });
       throw error;
     }
   }
@@ -33,7 +36,7 @@ class DataRepository {
 
       return result.jsonb_build_object;
     } catch (error) {
-      console.error('Error in createGeoJson:', error);
+      log.error('Error in createGeoJson', error, { id, geom, srid, table: values, limit, offset });
       throw error;
     }
   }

@@ -13,7 +13,10 @@ const logger = winston.createLogger({
       ? winston.format.json()
       : winston.format.combine(
           winston.format.colorize(),
-          winston.format.simple()
+          winston.format.printf(({ timestamp, level, message, context, ...meta }) => {
+            const metaStr = Object.keys(meta).length ? ` ${JSON.stringify(meta)}` : ''
+            return `${timestamp} ${level}: [${context}] ${message}${metaStr}`
+          })
         )
   ),
   defaultMeta: { 
