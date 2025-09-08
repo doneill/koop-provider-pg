@@ -8,25 +8,35 @@ const log = createLogger('Model')
 class Model {
   constructor() { }
 
-  async getData(req, callback) {
-    let schema, table, id
-    
+  getData(req, callback) {
+    const splitPath = req.params.id.split('.');
+    const schema = splitPath[0];
+    const table = splitPath[1];
+    const id = process.env.PG_OBJECTID || 'gid';
+    const pgLimit = process.env.PG_LIMIT || 10000000;
+
+    if (!table) {
+      const error = new ValidationError('The "id" parameter must be in the form of "schema.table"', { 
+        providedId: req.params.id,
+        schema,
+        table 
+      });
+      log.warn('Request validation failed', { 
+        errorType: error.name,
+        message: error.message,
+        details: error.details 
+      });
+      return callback(error);
+    }
+
+    // Handle async database operations with proper callback handling
+    this.processDataRequest(schema, table, id, parseInt(pgLimit), callback);
+  }
+
+  async processDataRequest(schema, table, id, limit, callback) {
     try {
-      const splitPath = req.params.id.split('.');
-      schema = splitPath[0];
-      table = splitPath[1];
-      id = process.env.PG_OBJECTID || 'gid';
-      const pgLimit = process.env.PG_LIMIT || 10000000;
-
-      if (!table) {
-        throw new ValidationError('The "id" parameter must be in the form of "schema.table"', { 
-          providedId: req.params.id,
-          schema,
-          table 
-        });
-      }
-
       const geomColumnName = await db.data.getGeometryColumnName(schema, table);
+      
       if (!geomColumnName || !geomColumnName.f_geometry_column || !geomColumnName.srid) {
         log.warn('Table does not have a geometry column', { schema, table });
         return callback(null, {
@@ -43,7 +53,6 @@ class Model {
       
       const geom = geomColumnName.f_geometry_column;
       const srid = geomColumnName.srid;
-      const limit = parseInt(pgLimit);
       const offset = 0;
 
       const geojson = await db.data.createGeoJson(id, geom, srid, schema + '.' + table, limit, offset);
@@ -81,8 +90,7 @@ class Model {
           message: error.message,
           details: error.details 
         });
-        callback(error);
-        return;
+        return callback(error);
       }
 
       const dbError = new DatabaseError(

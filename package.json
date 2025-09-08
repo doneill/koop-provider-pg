@@ -12,7 +12,6 @@
     "lint": "eslint . --ext .js"
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "config": "^3.3.8",
     "koop": "^5.1.0",
     "lodash": "^4.17.21",
