@@ -1,4 +1,3 @@
-const promise = require('bluebird')
 const config = require('config')
 
 const pgPromise = require('pg-promise')
@@ -14,8 +13,6 @@ const cn = {
 }
 
 const initOptions = {
-  promiseLib: promise,
-
   extend (obj, dc) {
     obj.data = new Data(obj, pgp)
   }
