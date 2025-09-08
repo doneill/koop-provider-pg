@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const { db } = require('../db')
 const { createLogger } = require('../utils/logger')
+const { ValidationError, DataNotFoundError, DatabaseError } = require('../utils/errors')
 
 const log = createLogger('Model')
 
@@ -15,8 +16,13 @@ class Model {
       const id = process.env.PG_OBJECTID || 'gid';
       const pgLimit = process.env.PG_LIMIT || 10000000;
 
-      if (!table)
-        throw new Error('The "id" parameter must be in the form of "schema.table"');
+      if (!table) {
+        throw new ValidationError('The "id" parameter must be in the form of "schema.table"', { 
+          providedId: req.params.id,
+          schema,
+          table 
+        });
+      }
 
       const geomColumnName = await db.data.getGeometryColumnName(schema, table);
       if (!geomColumnName || !geomColumnName.f_geometry_column || !geomColumnName.srid) {
@@ -67,8 +73,29 @@ class Model {
 
       callback(null, geojson);
     } catch (error) {
-      log.error('Error in getData', error, { schema, table, id });
-      callback(error);
+      if (error instanceof ValidationError || error instanceof DataNotFoundError) {
+        log.warn('Request validation failed', { 
+          errorType: error.name,
+          message: error.message,
+          details: error.details 
+        });
+        callback(error);
+        return;
+      }
+
+      const dbError = new DatabaseError(
+        'Failed to retrieve data from PostGIS',
+        error,
+        { schema, table, id }
+      );
+      
+      log.error('Database operation failed', error, { 
+        schema, 
+        table, 
+        id,
+        originalError: error.message 
+      });
+      callback(dbError);
     }
   }
 }

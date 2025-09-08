@@ -1,5 +1,6 @@
 const { table: sql } = require('../sql')
 const { createLogger } = require('../../utils/logger')
+const { DatabaseError, DataNotFoundError } = require('../../utils/errors')
 
 const log = createLogger('DataRepository')
 
@@ -18,8 +19,14 @@ class DataRepository {
 
       return result;
     } catch (error) {
+      const dbError = new DatabaseError(
+        'Failed to query geometry column information',
+        error,
+        { schema, table }
+      );
+      
       log.error('Error in getGeometryColumnName', error, { schema, table });
-      throw error;
+      throw dbError;
     }
   }
 
@@ -36,8 +43,14 @@ class DataRepository {
 
       return result.jsonb_build_object;
     } catch (error) {
+      const dbError = new DatabaseError(
+        'Failed to create GeoJSON from PostGIS data',
+        error,
+        { id, geom, srid, table: values, limit, offset }
+      );
+      
       log.error('Error in createGeoJson', error, { id, geom, srid, table: values, limit, offset });
-      throw error;
+      throw dbError;
     }
   }
 }

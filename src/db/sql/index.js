@@ -1,6 +1,7 @@
 const { QueryFile } = require('pg-promise')
 const { join: joinPath } = require('path')
 const { createLogger } = require('../../utils/logger')
+const { ConfigurationError } = require('../../utils/errors')
 
 const log = createLogger('SQLLoader')
 
@@ -20,7 +21,13 @@ function sql (file) {
   const qf = new QueryFile(fullPath, options)
 
   if (qf.error) {
-    log.error('Failed to load SQL file', qf.error, { file, path: fullPath })
+    const configError = new ConfigurationError(
+      'Failed to load SQL file',
+      { file, path: fullPath, originalError: qf.error.message }
+    );
+    
+    log.error('Failed to load SQL file', qf.error, { file, path: fullPath });
+    throw configError;
   }
 
   return qf
