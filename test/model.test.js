@@ -84,29 +84,32 @@ describe('Model Error Handling', () => {
   })
 
   describe('getData database errors', () => {
-    test('should wrap database errors as DatabaseError', async () => {
+    test('should wrap database errors as DatabaseError', (done) => {
       const req = { params: { id: 'schema.table' } }
       const dbError = new Error('Connection failed')
       db.data.getGeometryColumnName.mockRejectedValue(dbError)
 
-      await model.getData(req, mockCallback)
+      const callback = (error, result) => {
+        try {
+          expect(error).toBeInstanceOf(DatabaseError)
+          expect(error.message).toBe('Failed to retrieve data from PostGIS')
+          expect(error.originalError).toBe(dbError)
+          expect(error.details).toEqual({
+            schema: 'schema',
+            table: 'table',
+            id: 'gid'
+          })
+          expect(error.statusCode).toBe(500)
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        expect.any(DatabaseError)
-      )
-
-      const error = mockCallback.mock.calls[0][0]
-      expect(error.message).toBe('Failed to retrieve data from PostGIS')
-      expect(error.originalError).toBe(dbError)
-      expect(error.details).toEqual({
-        schema: 'schema',
-        table: 'table',
-        id: 'gid'
-      })
-      expect(error.statusCode).toBe(500)
+      model.getData(req, callback)
     })
 
-    test('should handle createGeoJson database errors', async () => {
+    test('should handle createGeoJson database errors', (done) => {
       const req = { params: { id: 'schema.table' } }
       const dbError = new Error('Query failed')
       
@@ -116,17 +119,20 @@ describe('Model Error Handling', () => {
       })
       db.data.createGeoJson.mockRejectedValue(dbError)
 
-      await model.getData(req, mockCallback)
+      const callback = (error, result) => {
+        try {
+          expect(error).toBeInstanceOf(DatabaseError)
+          expect(error.originalError).toBe(dbError)
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }
 
-      expect(mockCallback).toHaveBeenCalledWith(
-        expect.any(DatabaseError)
-      )
-
-      const error = mockCallback.mock.calls[0][0]
-      expect(error.originalError).toBe(dbError)
+      model.getData(req, callback)
     })
 
-    test('should handle unexpected GeoJSON result', async () => {
+    test('should handle unexpected GeoJSON result', (done) => {
       const req = { params: { id: 'schema.table' } }
       
       db.data.getGeometryColumnName.mockResolvedValue({
@@ -135,20 +141,28 @@ describe('Model Error Handling', () => {
       })
       db.data.createGeoJson.mockResolvedValue(null) // unexpected result
 
-      await model.getData(req, mockCallback)
+      const callback = (error, result) => {
+        try {
+          expect(error).toBeNull()
+          expect(result).toEqual(expect.objectContaining({
+            type: 'FeatureCollection',
+            features: [],
+            metadata: expect.objectContaining({
+              description: 'no-data'
+            })
+          }))
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }
 
-      expect(mockCallback).toHaveBeenCalledWith(null, expect.objectContaining({
-        type: 'FeatureCollection',
-        features: [],
-        metadata: expect.objectContaining({
-          description: 'no-data'
-        })
-      }))
+      model.getData(req, callback)
     })
   })
 
   describe('successful getData', () => {
-    test('should return valid GeoJSON with metadata', async () => {
+    test('should return valid GeoJSON with metadata', (done) => {
       const req = { params: { id: 'schema.table' } }
       const mockGeojson = {
         type: 'FeatureCollection',
@@ -167,19 +181,27 @@ describe('Model Error Handling', () => {
       })
       db.data.createGeoJson.mockResolvedValue(mockGeojson)
 
-      await model.getData(req, mockCallback)
+      const callback = (error, result) => {
+        try {
+          expect(error).toBeNull()
+          expect(result).toEqual(expect.objectContaining({
+            type: 'FeatureCollection',
+            features: mockGeojson.features,
+            description: 'PG Koop Feature Service',
+            metadata: expect.objectContaining({
+              title: 'schema',
+              name: 'schema.table',
+              idField: 'gid',
+              geometryType: 'Point'
+            })
+          }))
+          done()
+        } catch (e) {
+          done(e)
+        }
+      }
 
-      expect(mockCallback).toHaveBeenCalledWith(null, expect.objectContaining({
-        type: 'FeatureCollection',
-        features: mockGeojson.features,
-        description: 'PG Koop Feature Service',
-        metadata: expect.objectContaining({
-          title: 'schema',
-          name: 'schema.table',
-          idField: 'gid',
-          geometryType: 'Point'
-        })
-      }))
+      model.getData(req, callback)
     })
   })
 })
