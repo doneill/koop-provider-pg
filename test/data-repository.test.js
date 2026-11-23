@@ -25,7 +25,8 @@ describe('DataRepository Error Handling', () => {
 
   beforeEach(() => {
     mockDb = {
-      oneOrNone: jest.fn()
+      oneOrNone: jest.fn(),
+      one: jest.fn()
     }
     mockPgp = {}
     repository = new DataRepository(mockDb, mockPgp)
@@ -94,15 +95,8 @@ describe('DataRepository Error Handling', () => {
 
       expect(result).toEqual(expectedGeoJson)
       expect(mockDb.oneOrNone).toHaveBeenCalledWith(
-        expect.any(String),
-        {
-          id: 'gid',
-          geom: 'geom',
-          srid: 4326,
-          table: 'public.test_table',
-          limit: 1000,
-          offset: 0
-        }
+        expect.stringContaining('FROM "public"."test_table" t'),
+        ['geom', 1000, 0]
       )
     })
 
@@ -131,21 +125,30 @@ describe('DataRepository Error Handling', () => {
       }
     })
 
-    test('should handle various parameter types', async () => {
+    test('should handle various parameter types and where pushdown', async () => {
       mockDb.oneOrNone.mockResolvedValue({ jsonb_build_object: {} })
 
-      await repository.createGeoJson('id', 'the_geom', 3857, 'schema.table', 5000, 100)
+      await repository.createGeoJson('id', 'the_geom', 3857, 'schema.table', 5000, 100, {
+        whereSql: 'WHERE t."status" = $1',
+        orderBySql: 't."id" DESC',
+        params: ['ACTIVE']
+      })
 
       expect(mockDb.oneOrNone).toHaveBeenCalledWith(
-        expect.any(String),
-        {
-          id: 'id',
-          geom: 'the_geom',
-          srid: 3857,
-          table: 'schema.table',
-          limit: 5000,
-          offset: 100
-        }
+        expect.stringContaining('WHERE t."status" = $1'),
+        ['ACTIVE', 'the_geom', 5000, 100]
+      )
+    })
+
+    test('getCount should return integer count', async () => {
+      mockDb.one.mockResolvedValue({ count: 42 })
+
+      const count = await repository.getCount('public.test_table', 'WHERE t."zip" = $1', ['19103'])
+
+      expect(count).toBe(42)
+      expect(mockDb.one).toHaveBeenCalledWith(
+        'SELECT COUNT(*)::int AS count FROM "public"."test_table" t WHERE t."zip" = $1;',
+        ['19103']
       )
     })
   })

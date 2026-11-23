@@ -6,7 +6,8 @@ jest.mock('../src/db', () => ({
   db: {
     data: {
       getGeometryColumnName: jest.fn(),
-      createGeoJson: jest.fn()
+      createGeoJson: jest.fn(),
+      getCount: jest.fn()
     }
   }
 }))
